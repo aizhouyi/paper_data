@@ -36,27 +36,31 @@ for i in csv_reader:
 
 # bar_base_with_animation(num_list).render()
 # print(len(num_list))
-# result_dict = {}
-# for i in num_list:
-#     if i not in result_dict:
-#         result_dict[i] = 1
-#     else:
-#         result_dict[i] += 1
+result_dict = {}
+for i in num_list:
+    if i not in result_dict:
+        result_dict[i] = 1
+    else:
+        result_dict[i] += 1
 
 
-# x = list(result_dict.keys())
-# y = list(result_dict.values())
-# plt.bar(x, y)
-# plt.title('Bar graph')
-# plt.ylabel('Y axis')
-# plt.xlabel('X axis')
+x = list(result_dict.keys())
+y = list(result_dict.values())
+plt.bar(x, y)
+plt.title('Bar graph')
+plt.ylabel('Y axis')
+plt.xlabel('X axis')
 # plt.show()
 dic = {}
 for i, j in result_dict.items():
-    if j > 1600:
-        dic[i] = j // 100
-    elif j < 100:
-        dic[i] = j // 100
+    if j > 1500:
+        dic[i] = j // 30
+    elif 1500 >= j > 500:
+        dic[i] = j // 8
+    elif 500 >= j > 200:
+        dic[i] = j // 2
+    else:
+        dic[i] = 0
 f.seek(0, 0)
 csv_reader = csv.reader(f)
 for each_line in csv_reader:  # 文件指针归零
@@ -69,3 +73,4 @@ for each_line in csv_reader:  # 文件指针归零
             dic[each_line[0]] -= 1
         else:
             pass
+print(len(list(dic.keys())))

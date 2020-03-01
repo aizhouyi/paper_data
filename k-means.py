@@ -10,12 +10,17 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
-my_font = font_manager.FontProperties(fname="/Windows/Fonts/simhei.ttf",size=20)
+import pickle
+import time
 
-data = pd.read_csv(r"./new_half.csv", encoding='utf-8',sep=',')
+
+start_time = time.perf_counter()
+my_font = font_manager.FontProperties(
+    fname="C:/Windows/Fonts/simhei.ttf", size=20)
+data = pd.read_csv(r"./new_half.csv", encoding='utf-8', sep=',')
 data.head
-trains = list(data['content'].iloc[0:45048])
-lab = list(data['userId'].iloc[0:45048])
+trains = list(data['content'].iloc[0:15220])
+lab = list(data['userId'].iloc[0:15220])
 outputDir = "***"  # 结果输出地址
 labels = []  # 用以存储名称
 corpus = []  # 空语料库
@@ -43,24 +48,28 @@ word = vectorizer.get_feature_names()
 
 
 SSE = []
-for i in range(1, 99): # 歌曲数量最大值
+for i in range(1, 9):  # 选取
     km = KMeans(n_clusters=i, random_state=100)
     km.fit(weight)
     # 获取K-means算法的SSE
     SSE.append(km.inertia_)
-
-    # 绘制曲线
-plt.plot(range(1, 11), SSE, marker="o")
+f = open("./sse.pkl", "wb")
+pickle.dump(SSE, f)
+f.close()
+# 绘制曲线
+plt.plot(range(1, 9), SSE, marker="o")
 plt.xlabel("K值——簇数量", fontproperties=my_font, size=20)
 plt.ylabel("簇内误方差SSE", fontproperties=my_font, size=20)
 plt.show()
 
 
-mykms = KMeans(n_clusters=10) # 这是我自己给定的k值，这个是不是最好的呢？不知道
-y = mykms.fit_predict(weight)
-for i in range(0, 10):
-    label_i = []
-    for j in range(0, len(y)):
-        if y[j] == i:
-            label_i.append(labels[j])
-    print('label_'+str(i)+':'+str(label_i))
+# mykms = KMeans(n_clusters=10)  # 这是我自己给定的k值，这个是不是最好的呢？不知道
+# y = mykms.fit_predict(weight)
+# for i in range(0, 10):
+#     label_i = []
+#     for j in range(0, len(y)):
+#         if y[j] == i:
+#             label_i.append(labels[j])
+#     print('label_'+str(i)+':'+str(label_i))
+end_time = time.perf_counter()
+print("总共运行了{}秒".format(end_time-start_time))
