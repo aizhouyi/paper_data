@@ -39,7 +39,7 @@ for i in csv_reader:
 result_dict = {}
 for i in num_list:
     if i not in result_dict:
-        result_dict[i] = 1
+        result_d ict[i] = 1
     else:
         result_dict[i] += 1
 
