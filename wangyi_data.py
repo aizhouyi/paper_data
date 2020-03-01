@@ -17,26 +17,22 @@ def get_url():
     response = urllib.request.urlopen(req)
     print("b", end="")
     html = response.read()
-    # print(html)
     print("c", end="")
     response.close()
     html = html.decode("utf-8")
     print("d", end="")
-    # print(type(html))
-    # print((html))
     d = json.loads(html)
-    # print(d)
     songid = []
     for each_song in d["privileges"]:
         songid.append(each_song["id"])
     songid
-    with open("songid.pkl", "wb") as f:
+    with open("songid2.pkl", "wb") as f:
         pickle.dump(songid, f)
-    pf = open("./songid.pkl", "rb")
+    pf = open("./songid2.pkl", "rb")
     songid = pickle.load(pf)
-    f = open("song_url.txt", "w")
+    f = open("song_url2.txt", "w")
     for each_songid in songid:
-        for i in range(200):
+        for i in range(50):
             f.write(
                 "http://localhost:3000/comment/hot?id={0}&type=0&limit=20&offset={1}".format(each_songid, i * 20))
             f.write("\n")
@@ -50,7 +46,7 @@ def get_date():
     f = open("./new_data.csv", "a", encoding="utf-8", newline="")
     csv_writer = csv.writer(f)
     # csv_writer.writerow(["songid", "userId", "commentId", "content"])
-    songid_url_txt = open("./song_url.txt", "rt")
+    songid_url_txt = open("./song_url2.txt", "rt")
     repeated_id = []
     for url in songid_url_txt.readlines():
         song_id = re.findall(r"id=(.+?)&", url)[0]
@@ -63,20 +59,15 @@ def get_date():
         response = urllib.request.urlopen(req)
         print("b", end="")
         html = response.read()
-        # print(html)
         print("c", end="")
         response.close()
         html = html.decode("utf-8")
         print("d", end="")
-        # print(type(html))
-        # print((html))
         d = json.loads(html)
-        # print(d)
         if len(d["hotComments"]) == 0:
             print("此曲为空")
             repeated_id.append(song_id)
         for each_user in d["hotComments"]:
-            # print(each_user)
             temp = []
             temp.append(song_id)
             temp.append(each_user["user"]["userId"])
@@ -87,3 +78,7 @@ def get_date():
     songid_url_txt.close()
     end_time = time.perf_counter()
     print("总共运行了{}秒".format(end_time-start_time))
+
+
+# get_url()
+get_date()

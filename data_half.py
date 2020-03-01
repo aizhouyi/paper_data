@@ -6,6 +6,8 @@ from pyecharts import options as opts
 from pyecharts.faker import Faker
 from pyecharts.commons.utils import JsCode
 from matplotlib import pyplot as plt
+import random
+
 
 f = open("./new_data.csv", "r", encoding="utf-8")
 g = open("./new_half.csv", "w", encoding="utf-8", newline="")
@@ -34,32 +36,31 @@ for i in csv_reader:
 
 # bar_base_with_animation(num_list).render()
 # print(len(num_list))
-result_dict = {}
-for i in num_list:
-    if i not in result_dict:
-        result_dict[i] = 1
-    else:
-        result_dict[i] += 1
+# result_dict = {}
+# for i in num_list:
+#     if i not in result_dict:
+#         result_dict[i] = 1
+#     else:
+#         result_dict[i] += 1
 
-x = list(result_dict.keys())
-y = list(result_dict.values())
-plt.bar(x, y)
-plt.title('Bar graph')
-plt.ylabel('Y axis')
-plt.xlabel('X axis')
-plt.show()
+
+# x = list(result_dict.keys())
+# y = list(result_dict.values())
+# plt.bar(x, y)
+# plt.title('Bar graph')
+# plt.ylabel('Y axis')
+# plt.xlabel('X axis')
+# plt.show()
 dic = {}
 for i, j in result_dict.items():
     if j > 1600:
-        dic[i] = j // 3
+        dic[i] = j // 100
     elif j < 100:
-        dic[i] = j // 2
-
-
+        dic[i] = j // 100
 f.seek(0, 0)
 csv_reader = csv.reader(f)
 for each_line in csv_reader:  # 文件指针归零
-    print(1)
+    print(random.randint(0, 10))
     if each_line == ["songid", "userId", "commentId", "content"]:
         csv_writer.writerow(each_line)
     else:
