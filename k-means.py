@@ -16,7 +16,7 @@ import time
 
 start_time = time.perf_counter()
 my_font = font_manager.FontProperties(
-    fname="C:/Windows/Fonts/simhei.ttf", size=20)
+    fname="c:/Windows/Fonts/simhei.ttf", size=20)
 data = pd.read_csv(r"./new_half.csv", encoding='utf-8', sep=',')
 data.head
 trains = list(data['content'].iloc[0:15220])
@@ -60,6 +60,8 @@ f.close()
 plt.plot(range(1, 9), SSE, marker="o")
 plt.xlabel("K值——簇数量", fontproperties=my_font, size=20)
 plt.ylabel("簇内误方差SSE", fontproperties=my_font, size=20)
+end_time = time.perf_counter()
+print("总共运行了{}秒".format(end_time-start_time))
 plt.show()
 
 
@@ -71,5 +73,3 @@ plt.show()
 #         if y[j] == i:
 #             label_i.append(labels[j])
 #     print('label_'+str(i)+':'+str(label_i))
-end_time = time.perf_counter()
-print("总共运行了{}秒".format(end_time-start_time))
