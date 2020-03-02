@@ -26,13 +26,13 @@ def get_url():
     for each_song in d["privileges"]:
         songid.append(each_song["id"])
     songid
-    with open("songid2.pkl", "wb") as f:
+    with open("songid3.pkl", "wb") as f:
         pickle.dump(songid, f)
-    pf = open("./songid2.pkl", "rb")
+    pf = open("./songid3.pkl", "rb")
     songid = pickle.load(pf)
-    f = open("song_url2.txt", "w")
+    f = open("song_url3.txt", "w")
     for each_songid in songid:
-        for i in range(50):
+        for i in range(5):
             f.write(
                 "http://localhost:3000/comment/hot?id={0}&type=0&limit=20&offset={1}".format(each_songid, i * 20))
             f.write("\n")
@@ -46,7 +46,7 @@ def get_date():
     f = open("./new_data.csv", "a", encoding="utf-8", newline="")
     csv_writer = csv.writer(f)
     # csv_writer.writerow(["songid", "userId", "commentId", "content"])
-    songid_url_txt = open("./song_url2.txt", "rt")
+    songid_url_txt = open("./song_url3.txt", "rt")
     repeated_id = []
     for url in songid_url_txt.readlines():
         song_id = re.findall(r"id=(.+?)&", url)[0]
@@ -80,5 +80,5 @@ def get_date():
     print("总共运行了{}秒".format(end_time-start_time))
 
 
-# get_url()
+get_url()
 get_date()
