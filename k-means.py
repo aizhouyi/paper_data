@@ -53,7 +53,7 @@ for i in range(1, 9):  # 选取
     km.fit(weight)
     # 获取K-means算法的SSE
     SSE.append(km.inertia_)
-f = open("./sse.pkl", "wb")
+f = open("./sse{0}_{1}.pkl".format(time.localtime[3], time.localtime[4]), "wb")
 pickle.dump(SSE, f)
 f.close()
 # 绘制曲线
