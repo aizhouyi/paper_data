@@ -97,14 +97,11 @@ def publicnum(num, d=0):
 
 dic = {}
 for i, j in result_dict.items():
-    if j <= 200:
-        pass
-    elif 2800 < j <= 4000:
-        dic[i] = j // 6
-    elif 1000 < j <= 2800:
-        dic[i] = j // 5
+    if j >= 100:
+        dic[i] = 100
     else:
-        dic[i] = j // 4
+        pass
+print(len(dic.keys()))
 
 
 def graph(result_dict, title):
@@ -118,7 +115,7 @@ def graph(result_dict, title):
     plt.show()
 
 
-# graph(result_dict, "歌曲id对应的评论数量")
+graph(result_dict, "歌曲id对应的评论数量")
 print(averagenum(list(result_dict.values())))
 temp = averagenum(list(result_dict.values()))
 print(vat(temp[0], temp[1]))
