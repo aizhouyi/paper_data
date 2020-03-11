@@ -14,25 +14,55 @@ import pickle
 import time
 
 
-start_time = time.perf_counter()
 my_font = font_manager.FontProperties(
     fname="c:/Windows/Fonts/simhei.ttf", size=20)
+
+
+start_time = time.perf_counter()
 data = pd.read_csv(r"./new_half.csv", encoding='utf-8', sep=',')
 data.head
-trains = list(data['content'].iloc[0:15220])
-lab = list(data['userId'].iloc[0:15220])
+trains = list(data['content'].iloc[0:19689])
+songid_lab = list(data['songid'].iloc[0:19689])
+userid_lab = list(data['userId'].iloc[0:19689])
+commentid_lab = list(data['commentId'].iloc[0:19689])
 outputDir = "***"  # 结果输出地址
-labels = []  # 用以存储名称
+songid_lab_labels = []
+userid_lab_labels = []
+commentid_lab_labels = []
 corpus = []  # 空语料库
 # size=200#测试集容量
+
+'''停用词的过滤'''
+typetxt = open('./hit_stopwords.txt', "r", encoding="utf-8")  # 停用词文档地址
+texts = []
+for each_content in trains:  # 爬取的文本中未处理的特殊字符
+    texts.extend(re.findall(r"[a-zA-Z0-9]+|[\u4e00-\u9fa5]+", each_content))
+'''停用词库的建立'''
+for word in typetxt:
+    word = word.strip()
+    texts.append(word)
 for i in range(len(trains)):
-    labels.append(lab[i])  # 名称列表
-    data = jieba.cut(trains[i])  # 文本分词
+    songid_lab_labels.append(songid_lab[i])  # 名称列表
+    userid_lab_labels.append(userid_lab[i])  # 名称列表
+    commentid_lab_labels.append(commentid_lab[i])  # 名称列表
+    data = jieba.cut(trains[i], cut_all=True)  # 文本分词
     data_adj = ''
+    delete_word = []
     for item in data:
-        data_adj += item+' '
+        if item not in texts:  # 停用词过滤
+            value = re.compile(r'^[\u4e00-\u9fa5]{2,}$')  # 只匹配中文2字词以上
+            if value.match(item):
+                data_adj += item+' '
+        else:
+            delete_word.append(item)
     corpus.append(data_adj)  # 语料库建立完成
-# print(corpus)
+
+corpus = [i for i in corpus if len(i) != 0]
+print(corpus)
+f_croups = open(
+    "./croups{0}_{1}.pkl".format(time.localtime()[3], time.localtime()[4]), "wb")
+pickle.dump(corpus, f_croups)
+f_croups.close()
 
 
 vectorizer = CountVectorizer()  # 该类会将文本中的词语转换为词频矩阵，矩阵元素a[i][j] 表示j词在i类文本下的词频
@@ -53,7 +83,8 @@ for i in range(1, 9):  # 选取
     km.fit(weight)
     # 获取K-means算法的SSE
     SSE.append(km.inertia_)
-f = open("./sse{0}_{1}.pkl".format(time.localtime[3], time.localtime[4]), "wb")
+f = open("./sse{0}_{1}.pkl".format(time.localtime()
+                                   [3], time.localtime()[4]), "wb")
 pickle.dump(SSE, f)
 f.close()
 # 绘制曲线

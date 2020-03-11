@@ -50,6 +50,9 @@ for i in num_list:
         result_dict[i] += 1
 # 计算平均数和方差
 
+print(len(result_dict))
+print("breakpoint")
+
 
 def averagenum(num):
     nsum = 0
@@ -95,13 +98,15 @@ def publicnum(num, d=0):
     return maxkey
 
 
-dic = {}
-for i, j in result_dict.items():
-    if j >= 100:
-        dic[i] = 100
-    else:
-        pass
-print(len(dic.keys()))
+def graph_jieduan(result_dict, title):
+    x = list(result_dict.keys())
+    y = list(result_dict.values())
+    plt.bar(x, y)
+    # plt.xticks([])
+    plt.title(title)
+    plt.ylabel('songid_count')
+    plt.xlabel('截断点')
+    plt.show()
 
 
 def graph(result_dict, title):
@@ -110,9 +115,31 @@ def graph(result_dict, title):
     plt.bar(x, y)
     plt.xticks([])
     plt.title(title)
-    plt.xlabel('songid')
+    plt.xlabel('songid—')
     plt.ylabel('content_count')
     plt.show()
+
+
+jieduan_dict = {}
+for mm in range(1, max(result_dict.values()) - 4000):
+    ijk = 0
+    for i, j in result_dict.items():
+        if j >= mm:
+            ijk += 1
+        else:
+            pass
+    jieduan_dict[mm] = ijk
+
+
+# graph_jieduan(jieduan_dict, "截断点-songid骤降局部图")
+
+dic = {}
+for i, j in result_dict.items():
+    if j >= 100:
+        dic[i] = 100
+    else:
+        pass
+print(len(dic.keys()))
 
 
 graph(result_dict, "歌曲id对应的评论数量")
